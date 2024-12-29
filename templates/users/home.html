@@ -11,10 +11,40 @@
                 <div class="fw-bold">{{file.title}}</div>
                 {{file.description}}
             </div>
-            <button class="badge text-bg-primary rounded-pill">Download</button>
+            <button class="download-btn badge text-bg-primary rounded-pill" data-uid="{{user.id}}" data-id="{{file.id}}">Download</button>
         </li>
         {% endfor %}
     </ol>
 </div>
 
+
+<script>
+    $(document).ready(function() {
+        $('.download-btn').click(function() {
+            var userId = $(this).data('uid');
+            var fileId = $(this).data('id');
+            $.ajax({
+                url: `/services/files/download/${userId}/${fileId}/`,
+                type: 'GET',
+                success: function(response) {
+                    if (response.status) {
+                        const fileContent = atob(response.file_data);
+                        const blob = new Blob([fileContent], { type: 'application/octet-stream' });
+                        const link = document.createElement('a');
+                        link.href = window.URL.createObjectURL(blob);
+                        link.download = response.file_name;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    } else {
+                        alert(response.message);    
+                    }
+                },
+                error: function(xhr, status, error) {
+                    alert('An error occurred while trying to download the file.');
+                }
+            });
+        });
+    });
+</script>
 {% endblock main_content %}
