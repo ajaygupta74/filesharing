@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+
+<div class="container mt-5">
+    <h4>Hii {{user.email}}&nbsp;&nbsp;&nbsp;&nbsp;<a href="logout/">Logout</a></h4><br>
+    <ol class="list-group col-8">
+        {% for file in file_list %}
+        <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+                <div class="fw-bold">{{file.title}}</div>
+                {{file.description}}
+            </div>
+            <button class="badge text-bg-primary rounded-pill">Download</button>
+        </li>
+        {% endfor %}
+    </ol>
+</div>
+
+{% endblock main_content %}

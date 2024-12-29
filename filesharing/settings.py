@@ -136,9 +136,11 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+AUTH_USER_MODEL = 'users.User'
 
 AUTHENTICATION_BACKENDS = [
     'users.backends.EmailAuthentication',
+    'django.contrib.auth.backends.ModelBackend',
 ]
 AUTH_USER_MODEL = 'users.User'
 LOGOUT_REDIRECT_URL = '/'

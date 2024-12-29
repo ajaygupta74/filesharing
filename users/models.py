@@ -19,7 +19,7 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_active', True)
-
+        extra_fields.setdefault('email_confirmed', True)
         if extra_fields.get('is_staff') is not True:
             raise ValueError(_('Superuser must have is_staff=True.'))
         if extra_fields.get('is_superuser') is not True:
@@ -31,6 +31,8 @@ class User(AbstractUser):
     username = None
     email = models.EmailField(unique=True)
     email_confirmed = models.BooleanField(default=False)
+    email_verification_link = models.CharField(
+        max_length=500, null=True, blank=True)
     groups = models.ManyToManyField(
         Group, related_name='custom_users', null=True, blank=True)
     user_permissions = models.ManyToManyField(

@@ -9,4 +9,5 @@ class FileListSerializer(serializers.ModelSerializer):
             'title',
             'description',
             'user',
-            'uploaded_at')
+            'uploaded_at',
+        )

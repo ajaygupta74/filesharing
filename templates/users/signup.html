@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Signup{% endblock title %}
+
+{% block main_content %}
+
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="card shadow p-4">
+        <h1 class="text-center mb-4">Signup</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+        </form>
+        <div class="text-center mt-3">
+            <p>Already have an account?</p>
+            <a href="/login" class="btn btn-outline-secondary w-100">Login</a>
+        </div>
+    </div>
+</div>
+
+{% endblock main_content %}
