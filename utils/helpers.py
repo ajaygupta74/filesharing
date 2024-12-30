@@ -2,6 +2,7 @@ import random
 import string
 from django.core.mail import send_mail
 from django.conf import settings
+from django.urls import reverse
 
 
 def generate_random_string(length=20):
@@ -12,7 +13,7 @@ def generate_random_string(length=20):
 
 def send_verification_mail(email):
     verify_token = generate_random_string()
-    link = f"https://verbose-couscous-67qjxpwgvjfp76-8000.app.github.dev/users/email/verify/{verify_token}/"
+    link = f"{settings.BASE_URL}{reverse('verify_email', args=[verify_token])}"
     send_mail(
         settings.EMAIL_VERIFY_SUBJECT,
         settings.EMAIL_VERIFY_BODY.format(link=link),
