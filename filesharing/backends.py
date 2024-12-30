@@ -10,7 +10,6 @@ class CustomEmailBackend(EmailBackend):
             self.connection = smtplib.SMTP(self.host, self.port, timeout=self.timeout)
             self.connection.ehlo()
             if self.use_tls:
-                # Explicitly avoid passing unsupported arguments
                 self.connection.starttls()
                 self.connection.ehlo()
             if self.username and self.password:
