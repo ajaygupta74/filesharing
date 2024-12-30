@@ -1,10 +1,10 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth import login
-
+from django.http import HttpResponse
 from users.models import User
 from services.models import File
 
-from utils.helpers import update_verification_link
+from utils.helpers import send_verification_mail
 
 
 def home(request):
@@ -28,8 +28,10 @@ def user_signup(request):
             context['message'] = 'This email is already registered with another user.'
         else:
             try:
+                verify_token = send_verification_mail(email)
                 user = User.objects.create_user(email=email, password=password)
-                update_verification_link(user)
+                user.email_verification_link = verify_token
+                user.save(update_fields=['email_verification_link'])
                 context['message'] = 'Verification email has been sent. Please check your inbox.'
             except Exception as ex:
                 print("Exception occurred:", ex)
@@ -37,6 +39,16 @@ def user_signup(request):
     return render(request, template_name=template, context=context)
 
 
+def user_verify_email(request, token):
+    user = get_object_or_404(User, email_verification_link=token)
+    context = {}
+    if user.email_confirmed:
+        context['message'] = "Email already verified"
+    else:
+        user.email_confirmed = True
+        user.save(update_fields=['email_confirmed'])
+    return redirect('/login/')
+    
 
 def user_login(request):
     template = 'users/login.html'
